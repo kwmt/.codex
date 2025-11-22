@@ -1,0 +1,21 @@
+model = "gpt-5.1-codex-max"
+model_reasoning_effort = "medium"
+hide_agent_reasoning = true
+network_access = true
+sandbox_mode = "danger-full-access"
+approval_policy = "never"
+notify = ["/Users/kwmt/.codex/notify-rs/target/release/notify-rs"]
+
+[tools]
+web_search = true
+
+
+[projects."/Users/kwmt/personal/dev/toki"]
+trust_level = "trusted"
+
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp"]
+
+[notice]
+"hide_gpt-5.1-codex-max_migration_prompt" = true

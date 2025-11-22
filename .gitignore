@@ -1,0 +1,14 @@
+# 秘密情報／セッション情報
+auth.json
+history.jsonl
+sessions/
+log/
+
+# Codexバージョン情報（自動生成）
+version.json
+
+# Rustビルド成果物
+notify-rs/target/
+
+# macOS
+.DS_Store
