@@ -1,33 +1,33 @@
-# Codex Workspace
+# Codex ワークスペース
 
-This repo holds your Codex CLI config plus a small Rust helper (`notify-rs`) that surfaces desktop notifications when an agent turn completes.
+このリポジトリは Codex CLI の設定と、エージェントのターン完了時にデスクトップ通知を出す小さな Rust 製ヘルパー `notify-rs` を含みます。
 
-## Prerequisites
-- Rust toolchain (1.80+ recommended): https://www.rust-lang.org/tools/install
-- macOS `terminal-notifier` (used by `notify-rs`): `brew install terminal-notifier`
+## 必要環境
+- Rust ツールチェーン（1.80 以降推奨）: https://www.rust-lang.org/tools/install
+- macOS の通知コマンド `terminal-notifier`: `brew install terminal-notifier`
 
-## Build the notifier
+## notifier のビルド
 ```bash
 cd notify-rs
 cargo build --release
 ```
-The binary will be at `notify-rs/target/release/notify-rs`.
+ビルド後のバイナリは `notify-rs/target/release/notify-rs` に生成されます。
 
-## Point Codex at the binary
-Edit `config.toml` in this directory if needed:
+## Codex へのパス設定
+このディレクトリの `config.toml` でバイナリへのパスを指定します。
 ```toml
 notify = ["./notify-rs/target/release/notify-rs"]
 ```
-Using the relative path keeps the config portable across machines.
+相対パスにすることでマシン固有のパス依存を避けられます。
 
-## Quick test
-After building, you can sanity-check the notifier:
+## 動作確認
+ビルド後、以下で通知を送って確認できます。
 ```bash
 ./notify-rs/target/release/notify-rs \
   '{"type":"agent-turn-complete","last-assistant-message":"Hello","input-messages":["ping"],"cwd":"/tmp"}'
 ```
-You should see a macOS notification titled `Codex: Hello`.
+`Codex: Hello` というタイトルの macOS 通知が表示されれば成功です。
 
-## Notes
-- The notifier ignores events whose `type` is not `agent-turn-complete`.
-- If notifications do not appear, confirm `terminal-notifier` is installed and has permission in System Settings → Notifications.
+## 補足
+- `type` が `agent-turn-complete` 以外のイベントは無視されます。
+- 通知が出ない場合は `terminal-notifier` がインストール済みか、システム設定 → 通知で許可されているかを確認してください。
