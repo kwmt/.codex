@@ -28,6 +28,15 @@ notify = ["./notify-rs/target/release/notify-rs"]
 ```
 `Codex: Hello` というタイトルの macOS 通知が表示されれば成功です。
 
+## Slack への投稿（オプション）
+Slack の Incoming Webhook URL を `SLACK_WEBHOOK_URL` 環境変数で指定すると、同じ内容を Slack にもポストします。
+
+```bash
+export SLACK_WEBHOOK_URL="https://hooks.slack.com/services/..."
+./notify-rs/target/release/notify-rs '{"type":"agent-turn-complete","last-assistant-message":"Hello"}'
+```
+失敗した場合は標準エラーに理由を出力しますが、デスクトップ通知は従来どおり送られます。
+
 ## 補足
 - `type` が `agent-turn-complete` 以外のイベントは無視されます。
 - 通知が出ない場合は `terminal-notifier` がインストール済みか、システム設定 → 通知で許可されているかを確認してください。
