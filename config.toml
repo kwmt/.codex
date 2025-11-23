@@ -6,8 +6,8 @@ sandbox_mode = "danger-full-access"
 approval_policy = "never"
 notify = ["./notify-rs/target/release/notify-rs"]
 
-[tools]
-web_search = true
+[features]
+web_search_request = true
 
 
 [mcp_servers.context7]
