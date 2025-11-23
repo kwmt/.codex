@@ -2,6 +2,18 @@ use serde::Deserialize;
 use std::env;
 use std::process::Command;
 
+fn post_to_slack(webhook_url: &str, title: &str, message: &str) -> Result<(), String> {
+    let payload = ureq::json!({
+        "text": format!("*{}*\n{}", title, message),
+    });
+
+    ureq::post(webhook_url)
+        .set("Content-Type", "application/json")
+        .send_json(payload)
+        .map(|_| ())
+        .map_err(|e| format!("Slack POST failed: {e}"))
+}
+
 #[derive(Deserialize)]
 struct Notification {
     #[serde(rename = "type")]
@@ -72,6 +84,14 @@ fn main() {
         .as_deref()
         .map(|s| format!("codex-{s}"))
         .unwrap_or_else(|| "codex".to_string());
+
+    if let Ok(url) = env::var("SLACK_WEBHOOK_URL") {
+        if !url.is_empty() {
+            if let Err(err) = post_to_slack(&url, &title, &message) {
+                eprintln!("{err}");
+            }
+        }
+    }
 
     if let Err(err) = Command::new("terminal-notifier")
         .args([
